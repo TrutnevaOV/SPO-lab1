@@ -4,7 +4,7 @@
 #include <tchar.h>
 using namespace std;
 
-#define BUFFER_SIZE 256
+#define BUFFER_SIZE 32767
 
 // Функция для пункта 2
 void Counter()
@@ -75,13 +75,14 @@ int main()
         HKEY hkres;
         DWORD i = 0;
         TCHAR val[BUFFER_SIZE];
-        DWORD sval = sizeof(val);
+        DWORD sval;
         TCHAR data[BUFFER_SIZE];
         DWORD sizedata = BUFFER_SIZE;
 
         printf("\n\nList of commands:\n");
         RegOpenKeyEx(HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", 0, KEY_ALL_ACCESS, &hkres);
         do {
+            sval = sizeof(val);
             if (RegEnumValue(hkres, i, val, &sval, NULL, REG_NONE, NULL, NULL) == ERROR_SUCCESS) {
                 RegQueryValueEx(hkres, val, NULL, REG_NONE, (LPBYTE)data, &sizedata);
                 printf("%i) %s:  %s\n", i + 1, val, data);
